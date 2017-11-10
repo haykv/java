@@ -113,16 +113,18 @@ public class Program {
         while (true) {
 
             System.out.println("Welcome to library");
-            System.out.println("0) Add new user");
-            System.out.println("1) Add new book");
-            System.out.println("2) Search book by genre");
-            System.out.println("3) Search book by string");
-            System.out.println("4) Take book from user");
-            System.out.println("5) Display users");
-            System.out.println("6) Display books");
-            System.out.println("7) Load library");
-            System.out.println("8) Save library");
-            System.out.println("9) Exit");
+            System.out.println("0)  Add new user");
+            System.out.println("1)  Add new book");
+            System.out.println("2)  Search book by genre");
+            System.out.println("3)  Search book by string");
+            System.out.println("4)  Take book from user");
+            System.out.println("5)  Remove book from library");
+            
+            System.out.println("6)  Display users");
+            System.out.println("7)  Display books");            
+            System.out.println("8)  Load library");
+            System.out.println("9)  Save library");
+            System.out.println("10) Exit");
 
             String cmd = scanner.nextLine();
             String input;
@@ -202,20 +204,29 @@ public class Program {
                     myLibrary.takeBookFromUser(bookID, damage);
                     break;
                 case 5:
-                    myLibrary.printUsers();
+                    System.out.println("Remove book from library");
+                    System.out.println("Enter bookID");
+                    input = scanner.nextLine();
+
+                    bookID = Integer.parseInt(input.split(" ")[0]);
+                    myLibrary.removeBook(bookID);
+                    
                     break;
                 case 6:
-                    myLibrary.printBooks();
+                    myLibrary.printUsers();
                     break;
                 case 7:
+                    myLibrary.printBooks();
+                    break;
+                case 8:
                     myLibrary = (Library) load(fo);                    
                     System.out.println("-I- Library loaded succesfully");
                     break;
-                case 8:
+                case 9:
                     save(myLibrary, fo);
                     System.out.println("-I- Library saved succesfully");
                     break;
-                case 9:
+                case 10:
                     System.exit(0);
                 default:
                     System.err.println("-E- Wrong choice");

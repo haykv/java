@@ -37,6 +37,13 @@ public class Library implements Serializable {
         }
     }
 
+    public void removeBook(int bookID) {
+        Book foundBook = findBook(bookID);
+        if (foundBook != null && foundBook.getTakenBy() == null) {
+            books.remove(foundBook);
+        }
+    }
+
     public void addUser(String firstName, String lastName, String email, int id) {
         User newUser = new User(firstName, lastName, email, id, userLimit);
         users.add(newUser);
