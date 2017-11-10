@@ -5,7 +5,6 @@
  */
 package library;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,9 +16,6 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,15 +41,13 @@ public class Program {
         try {
             Object result;
             FileInputStream in = new FileInputStream(file);
-            ObjectInputStream is = new ObjectInputStream(in);
-            result = is.readObject();
-            is.close();
+            try (ObjectInputStream is = new ObjectInputStream(in)) {
+                result = is.readObject();
+            }
             return result;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(Program.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -99,23 +93,22 @@ public class Program {
 
         // TODO code application logic here                        
         File fo = new File("c:\\temp\\out.txt");
+
         File usersCSV = new File("c:\\temp\\users.csv");
         File booksCSV = new File("c:\\temp\\books.csv");
         Library myLibrary = new Library();
-        addUsersFromCSV(usersCSV, myLibrary);
-        addBooksFromCSV(booksCSV, myLibrary);
+        if (usersCSV.exists()) {
+            addUsersFromCSV(usersCSV, myLibrary);
+        }
+        if (booksCSV.exists()) {
+            addBooksFromCSV(booksCSV, myLibrary);
+        }
 
         myLibrary.addBook("Feiwel & Friends", "From the Notebooks of a Middle School Princess", "Children", "1250066026", 2015, 0, 1);
         myLibrary.addBook("Feiwel & Friends", "Royal Wedding Disaster", "Children", "1250066042", 2016, 0, 5);
-
         myLibrary.addUser("John", "Doe", "john@gmail.com", 11122333);
         //myLibrary.giveBookToUser(0, "11122333", 1);
-        ///myLibrary.takeBookFromUser(0, 10);
-        save(myLibrary, fo);
-        Library loadedLibrary = (Library) load(fo);
-        loadedLibrary.printBooks();
-        loadedLibrary.printUsers();
-
+        //myLibrary.takeBookFromUser(0, 10);        
         Scanner scanner = new Scanner(System.in);
         while (true) {
 
@@ -127,7 +120,9 @@ public class Program {
             System.out.println("4) Take book from user");
             System.out.println("5) Display users");
             System.out.println("6) Display books");
-            System.out.println("7) Exit");
+            System.out.println("7) Load library");
+            System.out.println("8) Save library");
+            System.out.println("9) Exit");
 
             String cmd = scanner.nextLine();
             String input;
@@ -180,7 +175,6 @@ public class Program {
                     userID = Integer.parseInt(input.split(" ")[1]);
                     days = Integer.parseInt(input.split(" ")[2]);
                     myLibrary.giveBookToUser(bookID, userID, days);
-
                     break;
                 case 3:
                     System.out.println("Give book to user - enter details");
@@ -214,12 +208,19 @@ public class Program {
                     myLibrary.printBooks();
                     break;
                 case 7:
+                    myLibrary = (Library) load(fo);                    
+                    System.out.println("-I- Library loaded succesfully");
+                    break;
+                case 8:
+                    save(myLibrary, fo);
+                    System.out.println("-I- Library saved succesfully");
+                    break;
+                case 9:
                     System.exit(0);
                 default:
                     System.err.println("-E- Wrong choice");
                     break;
             }
-            save(myLibrary, fo);
         }
 
     }

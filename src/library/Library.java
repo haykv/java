@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -21,16 +18,16 @@ import java.util.stream.Collectors;
  */
 public class Library implements Serializable {
 
-    private ArrayList<Book> books;
-    private ArrayList<User> users;
+    private final ArrayList<Book> books;
+    private final ArrayList<User> users;
     private int bookID = 0;
-    private int userLimit = 10;
-    private float damageFine = 10;
-    private float dateFine = 5;
+    private final int userLimit = 10;
+    private final float damageFine = 10;
+    private final float dateFine = 5;
 
     public Library() {
-        this.books = new ArrayList<Book>();
-        this.users = new ArrayList<User>();
+        this.books = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public void addBook(String author, String name, String genre, String isbn, int year, int damage, int numberOfBooks) {
@@ -69,28 +66,29 @@ public class Library implements Serializable {
     }
 
     public User findUser(int userID) {
-        for(User user : users) {
-            if (user.getId()==userID)
+        for (User user : users) {
+            if (user.getId() == userID) {
                 return user;
+            }
         }
         return null;
         /*return users.stream()
                 .filter(user -> user.getId().equals(userIDString))
                 .findAny()
                 .orElse(null);
-*/
+         */
     }
 
     private ArrayList<Book> uniqueBookList(ArrayList<Book> booksList) {
-        HashMap<String, Book> resultTable = new HashMap<String, Book>();
-        for (Book book : booksList) {
+        HashMap<String, Book> resultTable = new HashMap<>();
+        booksList.forEach((book) -> {
             resultTable.put(book.getName(), book);
-        }
-        ArrayList< Book> result = new ArrayList< Book>();
+        });
+        ArrayList< Book> result = new ArrayList<>();
 
-        for (Map.Entry<String, Book> entry : resultTable.entrySet()) {
+        resultTable.entrySet().forEach((entry) -> {
             result.add(entry.getValue());
-        }
+        });
 
         return (ArrayList< Book>) result;
     }
@@ -111,17 +109,17 @@ public class Library implements Serializable {
     }
 
     public void printBooksByString(String string) {
-        ArrayList<Book> books = getAvailableBooksByString(string);
-        for (Book book : books) {
+        ArrayList<Book> availableBooks = getAvailableBooksByString(string);
+        availableBooks.forEach((book) -> {
             System.out.println("ID: " + book.getBookID() + " = " + book.getName());
-        }
+        });
     }
 
     public void printGenreBooks(String genre) {
-        ArrayList<Book> books = getAvailableBooksByGenre(genre);
-        for (Book book : books) {
+        ArrayList<Book> availableBooks = getAvailableBooksByGenre(genre);
+        availableBooks.forEach((book) -> {
             System.out.println("ID: " + book.getBookID() + " = " + book.getName());
-        }
+        });
     }
 
     public void giveBookToUser(int bookID, int userID, int days) {
@@ -175,15 +173,15 @@ public class Library implements Serializable {
     }
 
     public void printBooks() {
-        for (Book book : books) {
+        books.forEach((book) -> {
             System.out.println(book);
-        }
+        });
     }
 
     public void printUsers() {
-        for (User user : users) {
+        users.forEach((user) -> {
             System.out.println(user);
-        }
+        });
     }
 
 }

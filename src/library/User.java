@@ -14,8 +14,9 @@ import java.util.ArrayList;
  */
 public class User implements Serializable {
 
-    private String firstName, lastName;
-    private String email;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
     private int id;
     ArrayList<Book> books;
     private int limit;

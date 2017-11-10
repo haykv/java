@@ -14,12 +14,12 @@ import java.util.Date;
  */
 public class Book implements Serializable {
 
-    private String author;
-    private String name;
+    private final String author;
+    private final String name;
     private String genre;
-    private String isbn;
+    private final String isbn;
     private int damage;
-    private int bookID;
+    private final int bookID;
     private int year;
     private Date returnDate;
 
